@@ -59,8 +59,8 @@ function uploadToYoutube() {
   fi
   echo "TODO $ytlog"
   youtube-upload \
-    --title="Test audio upload "$(basename "$audio") \
-    --description="Testing testing rosa rosae rosus rosum." \
+    --title="Sermon at ORPC: $title" \
+    --description="$sermondate - $passage - http://orpc.sg/node/$nodeid" \
     --client-secrets=/var/local/youtube_sermon_credentials.json \
     $video
 }
@@ -87,8 +87,41 @@ function uploadAllYoutube() {
 
 #makeAllMp4s
 #uploadAllYoutube
-audio="$1" # double quotes sanatize the input lah.
-[ -z "$audio" ] && audio="orpc_20150823_m.mp3"
+#audio="$1" # double quotes sanatizes the input lah.
+#[ -z "$audio" ] && audio="orpc_20150823_m.mp3"
+
+for i in "$@"
+do
+case $i in
+    -a=*|--audio=*)
+    audio="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--passage=*)
+    passage="${i#*=}"
+    shift # past argument=value
+    ;;
+    -t=*|--title=*)
+    title="${i#*=}"
+    shift # past argument=value
+    ;;
+    -d=*|--date=*)
+    sermondate="${i#*=}"
+    shift # past argument=value
+    ;;
+    -n=*|--nodeid=*)
+    nodeid="${i#*=}"
+    shift # past argument=value
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument with no value
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
 
 makeMp4 "$SERMONS_AUDIO/$audio" "$IMAGE"
 uploadToYoutube "$SERMONS_AUDIO/$audio"
