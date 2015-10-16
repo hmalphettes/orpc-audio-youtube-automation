@@ -8,14 +8,15 @@ YT_CRED="/var/local/youtube_sermon_credentials.json"
 
 function makeMp4() {
   local image="$2"
-  [ ! -e "$image"  ] && echo "Image file $image does not exist" && exit 1
+  [ ! -f "$image"  ] && echo "Image file $image does not exist" && exit 1
   local audio="$1"
-  [ ! -e "$audio"  ] && echo "Audio file $audio does not exist" && exit 1
+  [ ! -f "$audio"  ] && echo "Audio file $audio does not exist" && exit 1
   [ -z "$image" ] && image="$IMAGE"
   local output=$(makeOutputBaseName "$audio")
   output="$output.mp4"
   if [ -f "$output" ]; then
     echo "$output aleady generated"
+    echo $output
     return
   fi
   echo "Generating $output"
@@ -41,11 +42,12 @@ function makeMp4() {
 # scale="240:trunc(ow/a/2)*2"
 # scale=-1:380
 # But even then: no audio with quicktime player.
+  echo $output
 }
 
 function uploadToYoutube() {
   local audio="$1"
-  [ ! -e "$audio"  ] && echo "Audio file $audio does not exist" && exit 1
+  [ ! -f "$audio"  ] && echo "Audio file $audio does not exist" && exit 1
   local output=$(makeOutputBaseName "$audio")
   local ytlog="$output.yt.log"
   if [ -f $ytlog ]; then
@@ -122,6 +124,7 @@ case $i in
     ;;
 esac
 done
-
+echo "$SERMONS_AUDIO/$audio"
 makeMp4 "$SERMONS_AUDIO/$audio" "$IMAGE"
-uploadToYoutube "$SERMONS_AUDIO/$audio"
+## Uploading to youtube via the cmd line works ... but we need to manually renew the token every 60m
+#uploadToYoutube "$SERMONS_AUDIO/$audio"
