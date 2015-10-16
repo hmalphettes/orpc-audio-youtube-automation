@@ -77,9 +77,6 @@ fclose($handle);
 /* If you want to make other calls after the file upload, set setDefer back to false */
 $client->setDefer(false);
 
-echo "Youtube Upload Status: ";
-echo print_r($status), "\n";
-
 /** Update the link */
 $node->field_sermon_youtube[LANGUAGE_NONE][0]["url"] = 'https://www.youtube.com/watch?v=' . $status['id'];
 $node->field_sermon_youtube[LANGUAGE_NONE][0]["title"] = $title;
