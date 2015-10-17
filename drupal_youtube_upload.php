@@ -1,14 +1,27 @@
 <?php
-/* Make sure this is valid code once made into a single line
+/* Make sure this is valid code once made into a single line 
 to be able to use this as a drupal rule script */
 
-/* debugging: load an example */
+/* load the node specified on the command-line with --node=2509 (for example) */
 function init(&$var) {
     if(!isset($var)) {
-        $var = node_load(2529);
+        $v = drush_get_option('node');
+        $nid = intval($v);
+        if ($nid == 0) {
+            /* Example */
+            echo "No node was specified - Loading sermon 2529 for testing."
+            $nid = 2529;
+        }
+        $var = node_load($nid);
     }
 }
 init($node);
+
+$sermon_youtube=$node->field_sermon_youtube;
+if (empty($sermon_youtube) == false) {
+  echo "A youtube sermon was already uploaded - todo: check the name and decide to re-upload. ".$node->nid, "\n";
+  return;
+}
 
 $nodeid=$node->nid;
 $title=$node->title;
