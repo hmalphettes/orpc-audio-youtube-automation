@@ -13,14 +13,14 @@ function init(&$var) {
 }
 init($node);
 
+$nodeid=$node->nid;
+$title=$node->title;
 $sermon_youtube=$node->field_sermon_youtube;
 if (empty($sermon_youtube) == false) {
-  echo "A youtube sermon was already uploaded - todo: check the name and decide to re-upload. ".$node->nid, "\n";
+  echo "A youtube sermon for ".$title." was already uploaded at: ".$sermon_youtube[LANGUAGE_NONE][0]["url"]." - todo: check the name and decide to re-upload. ".$nodeid, "\n";
   return;
 }
 
-$nodeid=$node->nid;
-$title=$node->title;
 $audio=$node->field_sermonaudio[LANGUAGE_NONE][0]["filename"];
 $passage=$node->field_sermonpassage[LANGUAGE_NONE][0]["value"];
 $date=$node->field_sermondate[LANGUAGE_NONE][0]["value"];
@@ -47,7 +47,7 @@ $youtube = $ytua->getYt();
 /* Sample code from https://developers.google.com/youtube/v3/code_samples/php?hl=en#resumable_uploads */
 $snippet = new Google_Service_YouTube_VideoSnippet();
 $snippet->setTitle($title);
-$snippet->setDescription($date . " Passage: " . $passage . " http://orpc.sg/node/" . $nodeid);
+$snippet->setDescription($date . " Passage: " . $passage . " orpc.sg/node/" . $nodeid);
 $snippet->setTags(array("orpc", "sermon"));
 
 $status = new Google_Service_YouTube_VideoStatus();
