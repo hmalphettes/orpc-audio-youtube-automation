@@ -47,7 +47,7 @@ $youtube = $ytua->getYt();
 /* Sample code from https://developers.google.com/youtube/v3/code_samples/php?hl=en#resumable_uploads */
 $snippet = new Google_Service_YouTube_VideoSnippet();
 $snippet->setTitle($title);
-$snippet->setDescription($date . " Passage: " . $passage . " orpc.sg/node/" . $nodeid);
+$snippet->setDescription($date . " Passage: " . $passage . " http://orpc.sg/node/" . $nodeid);
 $snippet->setTags(array("orpc", "sermon"));
 
 $status = new Google_Service_YouTube_VideoStatus();
