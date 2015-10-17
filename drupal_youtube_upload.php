@@ -2,16 +2,12 @@
 /* Make sure this is valid code once made into a single line 
 to be able to use this as a drupal rule script */
 
-/* load the node specified on the command-line with --node=2509 (for example) */
+/* debugging: load an example */
 function init(&$var) {
     if(!isset($var)) {
         $v = drush_get_option('node');
         $nid = intval($v);
-        if ($nid == 0) {
-            /* Example */
-            echo "No node was specified - Loading sermon 2529 for testing."
-            $nid = 2529;
-        }
+        if ($nid == 0) { $nid = 2529; }
         $var = node_load($nid);
     }
 }
@@ -51,7 +47,7 @@ $youtube = $ytua->getYt();
 /* Sample code from https://developers.google.com/youtube/v3/code_samples/php?hl=en#resumable_uploads */
 $snippet = new Google_Service_YouTube_VideoSnippet();
 $snippet->setTitle($title);
-$snippet->setDescription("node:field-sermondate Passage: " . $passage);
+$snippet->setDescription($date . " Passage: " . $passage . " http://orpc.sg/node/" . $nodeid);
 $snippet->setTags(array("orpc", "sermon"));
 
 $status = new Google_Service_YouTube_VideoStatus();
