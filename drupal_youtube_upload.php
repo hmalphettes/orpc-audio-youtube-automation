@@ -53,12 +53,13 @@ if (abs($fsstat_ctime - $audio_ts) > 50) {
 } else if (empty($sermon_youtube) == false) {
   $sermon_youtube_ts = $sermon_youtube[LANGUAGE_NONE][0]['attributes']['_timestamp'];
   $sermon_youtube_fn = $sermon_youtube[LANGUAGE_NONE][0]['attributes']['_filename'];
+  $sermon_youtube_ur = $sermon_youtube[LANGUAGE_NONE][0]['url'];
   if (empty($sermon_youtube_ts) == false && ($sermon_youtube_ts < $fsstat_ctime)) {
     echo "There was an upload but the timestamp of the file is not the same anymore: re-upload ".$audio;
   } else if (empty($sermon_youtube_fn) == false && (strcmp($sermon_youtube_fn,$audio) !== 0 )) {
     echo "There was an upload but the name of the file is not the same anymore: re-upload ".$audio;
-  } else {
-    echo "A youtube sermon for ".$title." was already uploaded at: ".$sermon_youtube[LANGUAGE_NONE][0]["url"]." - nodeid=".$nodeid, "\n";
+  } else if (strpos($sermon_youtube_ur,'/channel/') === false) { // the /channel/ is the default place holder
+    echo "A youtube sermon for ".$title." was already uploaded at: ".$sermon_youtube_ur." - nodeid=".$nodeid, "\n";
     return;
   }
 }
